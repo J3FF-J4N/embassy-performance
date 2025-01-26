@@ -20,7 +20,7 @@ fn main() -> ! {
     let mut adc = Adc::new(p.ADC1);
     //adc.enable_vref();
     adc.set_resolution(Resolution::BITS8);
-    let mut channel = p.PC0;
+    let mut channel = p.PA0;
 
     loop {
         let v = adc.blocking_read(&mut channel);
