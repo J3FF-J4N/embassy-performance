@@ -1,0 +1,2 @@
+   text	   data	    bss	    dec	    hex	filename
+  16640	     80	   1412	  18132	   46d4	dac_adc

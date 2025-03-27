@@ -5,10 +5,12 @@
 use defmt::*;
 use embassy_stm32::dac::{DacCh1, Value};
 use embassy_stm32::dma::NoDma;
+use embassy_sync::blocking_mutex::raw::{CriticalSectionRawMutex, RawMutex};
+use embassy_sync::semaphore::{self, Semaphore};
 use {defmt_rtt as _, panic_probe as _};
 use embassy_stm32::adc::{Adc, Resolution};
 use embassy_stm32::Config;
-
+use embassy_sync::mutex::*;
 
 // use alloc::string::String;
 // extern crate alloc;
@@ -33,6 +35,11 @@ fn main() -> ! {
     info!("DAC Init Done");
 
 
+
+    // let mut test = Mutex::<CriticalSectionRawMutex, &str>::new("value");
+    // test.lock();
+    
+    
     // adc.enable_vref();
     adc.set_resolution(Resolution::BITS8);
 

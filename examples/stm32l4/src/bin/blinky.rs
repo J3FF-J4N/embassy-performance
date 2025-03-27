@@ -2,7 +2,7 @@
 #![no_main]
 
 
-use defmt::{info, unwrap};
+use defmt::{info, println, unwrap};
 use embassy_executor::Spawner;
 use embassy_stm32::gpio::{AnyPin, Level, Output, Pin, Speed};
 use embassy_stm32::mode::Async;
@@ -10,6 +10,7 @@ use embassy_stm32::rcc::{Pll, PllMul, PllPDiv, PllPreDiv, PllQDiv, PllRDiv, PllS
 use embassy_stm32::Config;
 use embassy_stm32::{bind_interrupts, peripherals, usart::{self, Config as UsartConfig, Uart}};
 use embassy_time::Timer;
+use heapless::Vec;
 use panic_probe as _;
 use defmt_rtt as _;
 
@@ -74,7 +75,36 @@ async fn main(spawner: Spawner) {
     let config = UsartConfig::default();
 
 
-    let usart = Uart::new(p.USART2, p.PA15, p.PA2, Irqs, p.DMA1_CH7, p.DMA1_CH6, config).unwrap();
+
+    
+
+    let mut usart = Uart::new(p.USART2, p.PA15, p.PA2, Irqs, p.DMA1_CH7, p.DMA1_CH6, config).unwrap();
+
+
+
+
+    
+    let mut x: [u8; 5] = [0; 5]; //Size fixed all data initialised
+    *x.last_mut().unwrap() = 1; //Modify element at index 41
+
+    let mut y: Vec<u8, 5> = Vec::new(); //Size fixed to a given maximum, data initialised once appended
+    y.push(1).unwrap(); //Add an element to the end of the collection
+    *y.last_mut().unwrap() = 2; //Modify element at index 0
+
+
+    println!("Array length: {}", x.len());
+    println!("Array content: {}", x);
+    println!("Vector length: {}", y.len());
+    println!("Vector content: {}", y);
+
+    // Array length: 5
+    // Array content: [0, 0, 0, 0, 1]
+    // Vector length: 1
+    // Vector content: [2]
+
+    loop {
+        
+    }
 
     // Spawned tasks run in the background, concurrently.
     unwrap!(spawner.spawn(blink(p.PB3.degrade())));
